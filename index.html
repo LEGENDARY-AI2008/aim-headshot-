@@ -3,182 +3,495 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AWELE Gaming - Free Fire Headshot Tutorial. Learn aim techniques used by skilled players.">
+<meta name="description" content="AWELE Gaming - Free Fire Headshot Tutorial & AI Sensitivity Calculator.">
 <title>AWELE Gaming - Headshot Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-  * {
-    box-sizing: border-box;
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #ff1a1a;
+    --darkred: #990000;
+    --bg: #0a0a0a;
+    --card: #141414;
+    --card2: #1c1c1c;
+    --border: rgba(255,26,26,0.3);
+    --glow: 0 0 15px rgba(255,26,26,0.4);
   }
 
   body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #0d0d0d;
+    font-family: 'Exo 2', sans-serif;
+    background: var(--bg);
     color: white;
     text-align: center;
+    min-height: 100vh;
+    padding-bottom: 80px;
   }
 
   header {
-    background: linear-gradient(90deg, #ff0000, #990000);
-    padding: 20px;
-    box-shadow: 0 0 15px red;
+    background: linear-gradient(135deg, #1a0000, #3a0000, #ff1a1a18);
+    padding: 28px 20px 20px;
+    border-bottom: 2px solid var(--red);
+    box-shadow: 0 4px 30px rgba(255,26,26,0.4);
+    position: relative;
+    overflow: hidden;
   }
-
-  .watermark {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    opacity: 0.2;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    pointer-events: none; /* Fix: won't block taps on mobile */
-    z-index: 999;
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 40px,
+      rgba(255,26,26,0.03) 40px, rgba(255,26,26,0.03) 41px
+    );
   }
-
-  .logo {
-    font-size: 40px; /* Fix: reduced from 50px for mobile */
+  header .logo { font-size: 38px; margin-bottom: 8px; }
+  header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(22px, 6vw, 40px);
+    letter-spacing: 4px;
+    color: var(--red);
+    text-shadow: 0 0 20px rgba(255,26,26,0.8);
+  }
+  header h3 {
+    font-size: clamp(11px, 3vw, 15px);
+    color: #888;
+    letter-spacing: 2px;
+    margin-top: 6px;
   }
 
   .card {
-    background: #1a1a1a;
-    margin: 20px auto; /* Fix: auto centers it */
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px red;
-    max-width: 700px; /* Fix: stops stretching on wide screens */
-    width: 90%;       /* Fix: proper mobile width */
+    background: var(--card);
+    margin: 24px auto;
+    padding: 24px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: var(--glow);
+    max-width: 700px;
+    width: 92%;
+    animation: fadeUp 0.5s ease both;
   }
 
-  button {
-    background: red;
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background 0.2s; /* Fix: smooth hover */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
-
-  /* Fix: works on desktop hover */
-  @media (hover: hover) {
-    button:hover {
-      background: darkred;
-    }
-  }
-
-  /* Fix: works on mobile tap */
-  button:active {
-    background: darkred;
-  }
-
-  #tips {
-    display: none;
-    margin-top: 20px;
-    transition: all 0.3s ease;
-  }
-
-  #tips.visible {
-    display: block;
-    animation: fadeIn 0.3s ease; /* Fix: smooth appear */
-  }
-
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .headshot {
-    font-size: clamp(22px, 5vw, 36px); /* Fix: scales on mobile */
-    color: red;
+  .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(15px, 4vw, 20px);
+    color: var(--red);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(255,26,26,0.5);
   }
+
+  button {
+    background: linear-gradient(135deg, var(--red), var(--darkred));
+    color: white;
+    border: none;
+    padding: 13px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  @media (hover: hover) {
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,26,26,0.5); }
+  }
+  button:active { transform: scale(0.97); }
+  button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  #tips { display: none; margin-top: 20px; }
+  #tips.visible { display: block; animation: fadeIn 0.3s ease; }
+
+  .step {
+    background: var(--card2);
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    text-align: left;
+  }
+  .step h3 { color: var(--red); font-size: 14px; margin-bottom: 4px; }
+  .step p { color: #ccc; font-size: 14px; line-height: 1.5; }
 
   .weapon-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 10px;
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 10px; margin-top: 14px;
+  }
+  .weapon-item {
+    background: #1e1e1e;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  @media (hover: hover) {
+    .weapon-item:hover { border-color: var(--red); box-shadow: 0 0 8px rgba(255,26,26,0.4); }
   }
 
-  .weapon-item {
-    background: #2a2a2a;
-    border: 1px solid red;
-    border-radius: 10px;
-    padding: 10px 18px;
-    font-size: 16px;
+  /* SENSITIVITY CALCULATOR */
+  .sens-form { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; text-align: left; }
+
+  .form-row { display: flex; flex-direction: column; gap: 5px; }
+  .form-row label { font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+
+  .form-row select,
+  .form-row input {
+    background: #1e1e1e;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    padding: 11px 14px;
+    font-size: 15px;
+    font-family: 'Exo 2', sans-serif;
+    outline: none;
+    transition: border 0.2s;
+    width: 100%;
+    -webkit-appearance: none;
+  }
+  .form-row select:focus,
+  .form-row input:focus { border-color: var(--red); }
+  .form-row select option { background: #1e1e1e; }
+
+  #calcBtn { margin-top: 6px; width: 100%; font-size: 17px; padding: 15px; }
+
+  #result { display: none; margin-top: 20px; }
+  #result.visible { display: block; animation: fadeIn 0.4s ease; }
+
+  .result-box {
+    background: linear-gradient(135deg, #150000, #1e0000);
+    border: 1px solid var(--red);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+  }
+  .result-box h3 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--red);
+    font-size: 13px;
+    margin-bottom: 14px;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  .sens-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .sens-item {
+    background: #1e1e1e;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255,26,26,0.2);
+  }
+  .sens-item .s-label { font-size: 10px; color: #777; letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
+  .sens-item .s-value { font-family: 'Orbitron', sans-serif; font-size: 22px; color: var(--red); }
+
+  .ai-tip-label { font-size: 11px; color: var(--red); letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase; }
+  .ai-tip {
+    background: #111;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.8;
+    border-left: 3px solid var(--red);
+    white-space: pre-wrap;
+  }
+
+  .loading-dots { display: inline-flex; align-items: center; gap: 4px; }
+  .loading-dots span {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: white;
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
+
+  /* AWELE top-right watermark */
+  .awele-watermark {
+    position: fixed;
+    top: 10px; right: 12px;
+    opacity: 0.15;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    pointer-events: none;
+    z-index: 999;
+    letter-spacing: 2px;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  /* LEGENDARY LAB footer */
+  .lab-footer {
+    margin: 50px auto 24px;
+    max-width: 700px;
+    width: 92%;
+    padding: 20px 16px;
+    border-top: 1px solid rgba(255,26,26,0.2);
+  }
+  .lab-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(12px, 3.5vw, 16px);
+    color: var(--red);
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px rgba(255,26,26,0.4);
+  }
+  .lab-sub {
+    font-size: 11px;
+    color: #444;
+    margin-top: 6px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .lab-copy {
+    font-size: 10px;
+    color: #333;
+    margin-top: 8px;
   }
 </style>
 </head>
 
 <body>
 
+<div class="awele-watermark">AWELE GAMING</div>
+
 <header>
   <div class="logo">🎯💀🎯</div>
   <h1>AWELE GAMING</h1>
-  <h3>Free Fire Headshot Tutorial</h3>
+  <h3>FREE FIRE HEADSHOT TUTORIAL</h3>
 </header>
 
+<!-- HEADSHOT GUIDE -->
 <div class="card">
-  <h2 class="headshot">💀 HEADSHOT MASTER GUIDE 💀</h2>
-  <p>Learn techniques used by skilled players to improve aim and accuracy.</p>
-
-  <!-- Fix: button now toggles, JS is separate -->
+  <h2 class="card-title">💀 HEADSHOT MASTER GUIDE 💀</h2>
+  <p style="color:#888; font-size:14px; margin-bottom:16px;">Techniques used by top players to dominate every fight.</p>
   <button id="toggleBtn">Show Tutorial</button>
-
   <div id="tips">
-    <h3>🎯 Step 1</h3>
-    <p>Practice crosshair placement at upper-body level.</p>
-
-    <h3>🎯 Step 2</h3>
-    <p>Use training mode regularly to improve reaction time.</p>
-
-    <h3>🎯 Step 3</h3>
-    <p>Adjust your sensitivity settings to what feels comfortable.</p>
-
-    <h3>🎯 Step 4</h3>
-    <p>Learn recoil control for different weapons.</p>
-
-    <h3>🎯 Step 5</h3>
-    <p>Stay calm during fights and focus on accurate shots.</p>
-
-    <h2>🏆 Keep Practicing Daily!</h2>
+    <div class="step"><h3>🎯 Step 1</h3><p>Practice crosshair placement at upper-body/neck level at all times — not the ground.</p></div>
+    <div class="step"><h3>🎯 Step 2</h3><p>Use Training Mode daily for at least 15 minutes to build muscle memory.</p></div>
+    <div class="step"><h3>🎯 Step 3</h3><p>Adjust sensitivity gradually — small changes, test in training, repeat.</p></div>
+    <div class="step"><h3>🎯 Step 4</h3><p>Learn recoil patterns per weapon. AK kicks up-left; MP40 is more straight up.</p></div>
+    <div class="step"><h3>🎯 Step 5</h3><p>Stay calm in fights. Panic shots miss. Breathe, aim, fire.</p></div>
+    <h3 style="color:var(--red); margin-top:18px; font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:2px;">🏆 KEEP PRACTICING DAILY!</h3>
   </div>
 </div>
 
-<!-- Fix: weapon card now has real structured content -->
+<!-- WEAPONS -->
 <div class="card">
-  <h2>🔫 Weapons</h2>
+  <h2 class="card-title">🔫 Weapons</h2>
   <div class="weapon-grid">
     <div class="weapon-item">🔫 AK47</div>
     <div class="weapon-item">🔫 UMP</div>
     <div class="weapon-item">🔫 MP40</div>
     <div class="weapon-item">🔫 M1887</div>
+    <div class="weapon-item">🔫 SCAR</div>
+    <div class="weapon-item">🔫 Groza</div>
   </div>
 </div>
 
-<div class="watermark">AWELE GAMING</div>
+<!-- AI SENSITIVITY CALCULATOR -->
+<div class="card">
+  <h2 class="card-title">🤖 AI Sensitivity Calculator</h2>
+  <p style="color:#888; font-size:13px; margin-bottom:4px;">Enter your device — AI generates your perfect Free Fire sensitivity.</p>
 
-<!-- Fix: JS separated from HTML, no inline onclick -->
+  <div class="sens-form">
+    <div class="form-row">
+      <label>Device Brand</label>
+      <select id="brand">
+        <option value="">-- Select Brand --</option>
+        <option>Samsung</option>
+        <option>Tecno</option>
+        <option>Infinix</option>
+        <option>iPhone</option>
+        <option>Xiaomi</option>
+        <option>Redmi</option>
+        <option>POCO</option>
+        <option>Realme</option>
+        <option>Oppo</option>
+        <option>Vivo</option>
+        <option>OnePlus</option>
+        <option>Itel</option>
+        <option>Nokia</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>Device Model (e.g. A06, Spark 20, iPhone 14)</label>
+      <input type="text" id="model" placeholder="Type your model..." />
+    </div>
+
+    <div class="form-row">
+      <label>Screen Size</label>
+      <select id="screen">
+        <option value="">-- Select Screen Size --</option>
+        <option value="small">Small (under 5.5")</option>
+        <option value="medium">Medium (5.5" – 6.2")</option>
+        <option value="large">Large (6.3" – 6.7")</option>
+        <option value="xlarge">Extra Large (6.8"+)</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>Play Style</label>
+      <select id="style">
+        <option value="">-- Select Play Style --</option>
+        <option value="aggressive">Aggressive (rush & headshot)</option>
+        <option value="balanced">Balanced (mid-range)</option>
+        <option value="sniper">Sniper / Long Range</option>
+        <option value="defensive">Defensive / Camper</option>
+      </select>
+    </div>
+
+    <button id="calcBtn">⚡ Generate My Sensitivity</button>
+  </div>
+
+  <div id="result">
+    <div class="result-box">
+      <h3>🎯 YOUR AI SENSITIVITY SETTINGS</h3>
+      <div class="sens-grid" id="sensGrid"></div>
+      <div class="ai-tip-label">💡 AI Personal Tip</div>
+      <div class="ai-tip" id="aiTip">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEGENDARY LAB FOOTER WATERMARK -->
+<div class="lab-footer">
+  <div class="lab-name">LËGĒNDÃRY LAB™ STUDIO</div>
+  <div class="lab-sub">Crafted with Precision · Est. 2026</div>
+  <div class="lab-copy">© 2026 LËGĒNDÃRY LAB™ Studio. All rights reserved.</div>
+</div>
+
 <script>
+  // Toggle Tutorial
   const btn = document.getElementById("toggleBtn");
   const tips = document.getElementById("tips");
   let isOpen = false;
-
   btn.addEventListener("click", function () {
     isOpen = !isOpen;
     if (isOpen) {
-      tips.classList.add("visible");
       tips.style.display = "block";
-      btn.textContent = "Hide Tutorial"; // Fix: button text updates
+      tips.classList.add("visible");
+      btn.textContent = "Hide Tutorial";
     } else {
       tips.classList.remove("visible");
       tips.style.display = "none";
       btn.textContent = "Show Tutorial";
     }
   });
+
+  // Sensitivity Calculator
+  const calcBtn = document.getElementById("calcBtn");
+  const resultDiv = document.getElementById("result");
+  const sensGrid = document.getElementById("sensGrid");
+  const aiTip = document.getElementById("aiTip");
+
+  calcBtn.addEventListener("click", async function () {
+    const brand = document.getElementById("brand").value;
+    const model = document.getElementById("model").value.trim();
+    const screen = document.getElementById("screen").value;
+    const style = document.getElementById("style").value;
+
+    if (!brand || !model || !screen || !style) {
+      alert("Please fill in all fields!");
+      return;
+    }
+
+    calcBtn.disabled = true;
+    calcBtn.innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span> Generating...';
+
+    resultDiv.classList.remove("visible");
+    resultDiv.style.display = "none";
+
+    // Base sensitivity values by screen size
+    const screenMap = {
+      small:  [88, 78, 72, 67, 62, 58],
+      medium: [76, 66, 60, 55, 50, 46],
+      large:  [65, 55, 50, 45, 40, 36],
+      xlarge: [54, 44, 39, 34, 30, 26]
+    };
+    const styleOffset = { aggressive: 10, balanced: 0, sniper: -12, defensive: -5 };
+    const base = screenMap[screen];
+    const offset = styleOffset[style];
+    const vals = base.map(v => Math.min(100, Math.max(5, v + offset)));
+    const labels = ["General", "Red Dot", "2x Scope", "4x Scope", "AWM Scope", "Free Look"];
+
+    // Show sensitivity grid immediately
+    sensGrid.innerHTML = labels.map((l, i) => `
+      <div class="sens-item">
+        <div class="s-label">${l}</div>
+        <div class="s-value">${vals[i]}</div>
+      </div>
+    `).join("");
+
+    aiTip.textContent = "Generating your personal tip...";
+    resultDiv.style.display = "block";
+    resultDiv.classList.add("visible");
+
+    // Call Claude API for personalized tip
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          messages: [{
+            role: "user",
+            content: `You are a Free Fire mobile gaming expert. A player uses a ${brand} ${model} with a ${screen} screen. Play style: ${style}.
+
+Their sensitivity settings:
+General: ${vals[0]}, Red Dot: ${vals[1]}, 2x: ${vals[2]}, 4x: ${vals[3]}, AWM: ${vals[4]}, Free Look: ${vals[5]}
+
+Write a short personal coaching message (max 120 words):
+1. Why these values fit their device and style (1-2 sentences)
+2. Two numbered pro tips for more headshots based on their style
+3. One quick adjustment tip if sensitivity feels off
+
+Be direct, energetic, and practical. No markdown, no asterisks.`
+          }]
+        })
+      });
+
+      const data = await response.json();
+      const text = data.content?.map(c => c.text || "").join("") || "";
+      aiTip.textContent = text || getFallbackTip(brand, model, style, vals);
+    } catch (err) {
+      aiTip.textContent = getFallbackTip(brand, model, style, vals);
+    }
+
+    calcBtn.disabled = false;
+    calcBtn.textContent = "⚡ Generate My Sensitivity";
+  });
+
+  function getFallbackTip(brand, model, style, vals) {
+    const tips = {
+      aggressive: `These settings are tuned for fast flick shots on your ${brand} ${model}. 1. Pre-aim every corner at head height before pushing. 2. Use peek-and-shoot — don't stand still. If it feels too fast, lower General by 5 points.`,
+      balanced: `Perfect mid-range values for your ${brand} ${model}. 1. Use Red Dot for close fights, 2x for mid-range — switch fast. 2. Crouch before firing to stabilize recoil. If aim drifts, reduce 2x Scope by 3.`,
+      sniper: `Low sensitivity gives you precision on your ${brand} ${model}. 1. Always go prone before AWM shots. 2. Pre-scope on predicted enemy paths, not reactively. If AWM scope feels slow, raise it by 5.`,
+      defensive: `These values help steady aim for your play style on ${brand} ${model}. 1. Hold angles with 4x and let enemies come to you. 2. Tap-fire, don't spray. If Free Look feels sluggish, raise it by 8.`
+    };
+    return tips[style] || `Settings generated for your ${brand} ${model}. Practice daily in Training Mode to build muscle memory with these values.`;
+  }
 </script>
 
 </body>
