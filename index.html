@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AWELE Gaming - Free Fire Headshot Tutorial. Learn aim techniques used by skilled players.">
+<title>AWELE Gaming - Headshot Guide</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0d0d0d;
+    color: white;
+    text-align: center;
+  }
+
+  header {
+    background: linear-gradient(90deg, #ff0000, #990000);
+    padding: 20px;
+    box-shadow: 0 0 15px red;
+  }
+
+  .watermark {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.2;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    pointer-events: none; /* Fix: won't block taps on mobile */
+    z-index: 999;
+  }
+
+  .logo {
+    font-size: 40px; /* Fix: reduced from 50px for mobile */
+  }
+
+  .card {
+    background: #1a1a1a;
+    margin: 20px auto; /* Fix: auto centers it */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px red;
+    max-width: 700px; /* Fix: stops stretching on wide screens */
+    width: 90%;       /* Fix: proper mobile width */
+  }
+
+  button {
+    background: red;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s; /* Fix: smooth hover */
+  }
+
+  /* Fix: works on desktop hover */
+  @media (hover: hover) {
+    button:hover {
+      background: darkred;
+    }
+  }
+
+  /* Fix: works on mobile tap */
+  button:active {
+    background: darkred;
+  }
+
+  #tips {
+    display: none;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+  }
+
+  #tips.visible {
+    display: block;
+    animation: fadeIn 0.3s ease; /* Fix: smooth appear */
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .headshot {
+    font-size: clamp(22px, 5vw, 36px); /* Fix: scales on mobile */
+    color: red;
+  }
+
+  .weapon-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .weapon-item {
+    background: #2a2a2a;
+    border: 1px solid red;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 16px;
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🎯💀🎯</div>
+  <h1>AWELE GAMING</h1>
+  <h3>Free Fire Headshot Tutorial</h3>
+</header>
+
+<div class="card">
+  <h2 class="headshot">💀 HEADSHOT MASTER GUIDE 💀</h2>
+  <p>Learn techniques used by skilled players to improve aim and accuracy.</p>
+
+  <!-- Fix: button now toggles, JS is separate -->
+  <button id="toggleBtn">Show Tutorial</button>
+
+  <div id="tips">
+    <h3>🎯 Step 1</h3>
+    <p>Practice crosshair placement at upper-body level.</p>
+
+    <h3>🎯 Step 2</h3>
+    <p>Use training mode regularly to improve reaction time.</p>
+
+    <h3>🎯 Step 3</h3>
+    <p>Adjust your sensitivity settings to what feels comfortable.</p>
+
+    <h3>🎯 Step 4</h3>
+    <p>Learn recoil control for different weapons.</p>
+
+    <h3>🎯 Step 5</h3>
+    <p>Stay calm during fights and focus on accurate shots.</p>
+
+    <h2>🏆 Keep Practicing Daily!</h2>
+  </div>
+</div>
+
+<!-- Fix: weapon card now has real structured content -->
+<div class="card">
+  <h2>🔫 Weapons</h2>
+  <div class="weapon-grid">
+    <div class="weapon-item">🔫 AK47</div>
+    <div class="weapon-item">🔫 UMP</div>
+    <div class="weapon-item">🔫 MP40</div>
+    <div class="weapon-item">🔫 M1887</div>
+  </div>
+</div>
+
+<div class="watermark">AWELE GAMING</div>
+
+<!-- Fix: JS separated from HTML, no inline onclick -->
+<script>
+  const btn = document.getElementById("toggleBtn");
+  const tips = document.getElementById("tips");
+  let isOpen = false;
+
+  btn.addEventListener("click", function () {
+    isOpen = !isOpen;
+    if (isOpen) {
+      tips.classList.add("visible");
+      tips.style.display = "block";
+      btn.textContent = "Hide Tutorial"; // Fix: button text updates
+    } else {
+      tips.classList.remove("visible");
+      tips.style.display = "none";
+      btn.textContent = "Show Tutorial";
+    }
+  });
+</script>
+
+</body>
+</html>
